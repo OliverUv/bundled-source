@@ -1,6 +1,6 @@
 {
     "name": "bundled-source",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Get source of module, as if bundled as its own endpoint",
     "main": "src/index.js",
     "scripts": {
