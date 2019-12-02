@@ -10,7 +10,7 @@ Point it to a module, and it'll return the bundled source for that module and it
 const bundledSource = require('bundled-source');
 
 const srcPromise = bundledSource(
-    require.resolve('./some-module'), // used in node and in webpack'd bundle
+    require.resolve && require.resolve('./some-module'), // used in node and in webpack'd bundle
     require('./some-module'),         // used in browserified bundle
 );
 
