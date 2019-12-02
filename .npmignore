@@ -1,3 +1,6 @@
-build-browserify/
-build-webpack/
+build/
 test/
+test.webpack.dev.config.js
+test.webpack.prod.config.js
+.lvimrc
+tags
