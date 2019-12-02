@@ -1,0 +1,48 @@
+{
+    "name": "bundled-source",
+    "version": "1.0.0",
+    "description": "Get source of module, as if bundled as its own endpoint",
+    "main": "src/index.js",
+    "scripts": {
+        "clear": "rm -rf ./build",
+        "build-tests": "npm run clear && npm run build-browserify && npm run build-webpack-prod && npm run build-webpack-dev",
+        "test-node": "npm run test-nobundle && npm run test-browserify-node && npm run test-webpack-prod-node && npm run test-webpack-dev-node",
+        "build-browserify": "browserify ./test/index.js -o ./build/browserify.test.bundle.js",
+        "build-webpack-prod": "webpack --config test.webpack.prod.config.js",
+        "build-webpack-dev": "webpack --config test.webpack.dev.config.js",
+        "test-browserify-node": "node ./build/browserify.test.bundle.js",
+        "test-browserify-browser": "serves ./build/browserify.test.bundle.js",
+        "test-webpack-prod-browser": "serves ./build/webpack.prod.test.bundle.js",
+        "test-webpack-dev-browser": "serves ./build/webpack.dev.test.bundle.js",
+        "test-webpack-prod-node": "node ./build/webpack.prod.test.bundle.js",
+        "test-webpack-dev-node": "node ./build/webpack.dev.test.bundle.js",
+        "test-nobundle": "node ./test/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/OliverUv/bundled-source.git"
+    },
+    "keywords": [
+        "bundling",
+        "bundle",
+        "browserify",
+        "webpack",
+        "node",
+        "isolated-vm",
+        "webworker"
+    ],
+    "author": "Oliver Uvman <oliver@uvman.se> (http://vvv.uvman.se/)",
+    "license": "MIT",
+    "devDependencies": {
+        "browserify": "^16.5.0",
+        "serves": "^1.1.1",
+        "tap-browser-color": "^0.1.2",
+        "tape": "^4.11.0",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10"
+    },
+    "optionalDependencies": {
+        "browserify": "^16.5.0"
+    },
+    "dependencies": {}
+}
