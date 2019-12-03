@@ -1,8 +1,10 @@
-Point it to a module, and it'll return the bundled source for that module and its dependencies.
+Point it to a module, and it'll return a string of the bundled source for that module and its dependencies. Evaluating that string with `new Function` (NOT `eval`) will give you the exports of your module.
 
 * Works in bundles bundled with browserify.
 * Works in bundles bundled with webpack.
-* Works in node without having used a bundler IFF you have browserify installed and available in node_modules.
+* Works in node without having used a bundler IFF you have browserify installed and available in node_modules, and your module can be browserified with the `node` and `fullPaths` options.
+
+Does all these things simultaneously if you follow the calling convention below.
 
 # Usage
 
@@ -15,14 +17,32 @@ const srcPromise = bundledSource(
 );
 
 // in non-bundled node, we call out to browserify, so need to be async.
-console.log(await src);
+const src = await srcPromise;
+
+// ELSEWHERE, maybe in an isolated-vm or webworker
+// you can do this to get the exports of `some-module`:
+
+const f = new Function(src);
+const exports = f();
 ```
+
+See `test/index.js` to see it used for real.
 
 # Why?
 
 Useful for taking module source and shoving it in a webworker, isolate-vm, or other separated environment, if your code is bundled with different bundlers depending on the environment it runs in. For this reason, we ensure the API is one that can be handled by all of these environments and bundlers without any changes.
 
 You probably want to use `webworkify` or `webworkify-webpack` if you're only bundling and running in one environment.
+
+# Compatibility
+
+Tested with:
+* webpack 4.41.2
+* browserify 16.5.0
+* node 8.15.0
+
+* NOT tested with webpack configurations that use more than one chunk.
+* Probably NOT compatible with babel's es modules.
 
 # Warnings
 

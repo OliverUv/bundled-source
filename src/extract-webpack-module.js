@@ -1,6 +1,6 @@
 // Copied from npm module 'webworkerify-webpack' https://github.com/borisirota/webworkify-webpack/
+// Modified to produce a function that returns the main module exports, instead of trying to isolate away `this`.
 // Modified to return the source instead of `Blob`ing it and putting in a web worker
-// Modified to figure out a good value for globalThis instead of using `self`, which would only be appropriate in a worker
 // Copied from git commit 2e7827dc8e88a4eb45055d0cc7a0597de0d4fd99
 
 function webpackBootstrapFunc (modules) {
