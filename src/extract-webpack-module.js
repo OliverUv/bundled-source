@@ -3,8 +3,6 @@
 // Modified to figure out a good value for globalThis instead of using `self`, which would only be appropriate in a worker
 // Copied from git commit 2e7827dc8e88a4eb45055d0cc7a0597de0d4fd99
 
-const getGlobalThis = require('./global-this').ternary;
-
 function webpackBootstrapFunc (modules) {
 /******/  // The module cache
 /******/  var installedModules = {};
