@@ -21,8 +21,12 @@ tape('test', async function (t) {
 
     const g = getGlobalThis();
     g.__EVAL_CHECK__ = false;
-    const f = eval(src);
+    const bundledFun = new Function(src);
+    const roundtrip = bundledFun();
+
     t.ok(g.__EVAL_CHECK__, 'can eval module');
+    const roundtripObj = {a: 123};
+    t.equal(roundtrip(roundtripObj), roundtripObj, 'can roundtrip through evald module');
 
     t.end();
 });

@@ -182,7 +182,7 @@ module.exports = function (moduleId, options) {
 
   var requiredModules = options.all ? { main: Object.keys(sources.main) } : getRequiredModules(sources, moduleId)
 
-  var src = ''
+  var src = '(function(){'
 
   Object.keys(requiredModules).filter(function (m) { return m !== 'main' }).forEach(function (module) {
     var entryModule = 0
@@ -194,7 +194,7 @@ module.exports = function (moduleId, options) {
     src = src + 'var ' + module + ' = (' + webpackBootstrapFunc.toString().replace('ENTRY_MODULE', JSON.stringify(entryModule)) + ')({' + requiredModules[module].map(function (id) { return '' + JSON.stringify(id) + ': ' + sources[module][id].toString() }).join(',') + '});\n'
   })
 
-  src = src + 'new ((' + webpackBootstrapFunc.toString().replace('ENTRY_MODULE', JSON.stringify(moduleId)) + ')({' + requiredModules.main.map(function (id) { return '' + JSON.stringify(id) + ': ' + sources.main[id].toString() }).join(',') + '}))(' + getGlobalThis +');'
+  src = src + 'return ((' + webpackBootstrapFunc.toString().replace('ENTRY_MODULE', JSON.stringify(moduleId)) + ')({' + requiredModules.main.map(function (id) { return '' + JSON.stringify(id) + ': ' + sources.main[id].toString() }).join(',') + '}))'
 
-  return src;
+  return src + '})()';
 }

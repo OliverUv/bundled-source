@@ -1,5 +1,6 @@
 // Copied from npm module 'webworkify' https://github.com/browserify/webworkify/
-// Modified to return the source instead of `Blob`ing it and putting in a web worker
+// Modified to avoid creating its own main module, this may void babel es module export support
+// Modified to return the source and id of the requested module instead of `Blob`ing it and putting in a web worker
 // Modified to figure out a good value for globalThis instead of using `self`, which would only be appropriate in a worker
 // Copied from git commit baf2884256768aea6c36be1ea6e1efb2144fcfbc
 
@@ -40,20 +41,8 @@ module.exports = function (fn, options) {
             wcache
         ];
     }
-    var skey = Math.floor(Math.pow(16, 8) * Math.random()).toString(16);
-
-    var scache = {}; scache[wkey] = wkey;
-    sources[skey] = [
-        'function(require,module,exports){' +
-            // try to call default if defined to also support babel esmodule exports
-            'var f = require(' + stringify(wkey) + ');' +
-            '(f.default ? f.default : f)(' + getGlobalThis + ');' +
-        '}',
-        scache
-    ];
-
     var workerSources = {};
-    resolveSources(skey);
+    resolveSources(wkey);
 
     function resolveSources(key) {
         workerSources[key] = true;
@@ -73,8 +62,8 @@ module.exports = function (fn, options) {
                 + ',' + stringify(sources[key][1]) + ']'
             ;
         }).join(',')
-        + '},{},[' + stringify(skey) + '])'
+        + '},{},[' + stringify(wkey) + '])'
     ;
 
-    return src;
+    return { main: wkey, source: src };
 };
